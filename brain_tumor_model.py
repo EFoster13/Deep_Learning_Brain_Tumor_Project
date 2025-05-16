@@ -1,4 +1,5 @@
 import os
+import datetime
 import cv2
 import numpy as np
 import torch
@@ -119,6 +120,9 @@ optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
 # Training loop
 train_losses, val_accuracies = [], []
+best_acc = 0.0
+best_model_path = "saved_models/best_model.pth"
+
 
 for epoch in range(EPOCHS):
     model.train()
@@ -150,6 +154,12 @@ for epoch in range(EPOCHS):
 
     print(f"Epoch {epoch+1}, Loss: {avg_loss:.4f}, Validation Accuracy: {acc:.2f}%")
 
+    # Save best model
+    if acc > best_acc:
+        best_acc = acc
+        torch.save(model.state_dict(), best_model_path)
+        print(f"✅ Saved new best model with {best_acc:.2f}% accuracy.")
+
 # Plot Training Loss
 plt.figure(figsize=(6, 4))
 plt.plot(train_losses, label='Training Loss')
@@ -170,5 +180,9 @@ plt.legend()
 plt.tight_layout()
 plt.show()
 
+# Generate unique filename with timestamp
+timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+model_filename = f"saved_models/model_{timestamp}.pth"
+
 # Save the model
-torch.save(model.state_dict(), "brain_tumor_model.pth")
+torch.save(model.state_dict(), model_filename)
