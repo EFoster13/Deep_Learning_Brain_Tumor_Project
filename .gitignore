@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Virtual environments
+env/
+venv/
+
+# Data
+*.csv
+*.npz
+*.npy
+*.zip
+brain_tumor_dataset/
+
+# VSCode or PyCharm configs (optional)
+.vscode/
+.idea/
