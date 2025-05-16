@@ -5,15 +5,36 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from torch.utils.data import DataLoader, TensorDataset, random_split
-import matplotlib.pyplot as plt
+from torch.utils.data import DataLoader, Dataset
+from torchvision import transforms
 from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
 
 # Hyperparameters
 IMG_SIZE = 128
 BATCH_SIZE = 32
 EPOCHS = 10
 LEARNING_RATE = 0.001
+
+# Custom Dataset class
+class BrainTumorDataset(Dataset):
+    def __init__(self, images, labels, transform=None):
+        self.images = images
+        self.labels = labels
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.images)
+
+    def __getitem__(self, idx):
+        image = self.images[idx]
+        label = self.labels[idx]
+        image = torch.tensor(image, dtype=torch.float32).permute(2, 0, 1)
+
+        if self.transform:
+            image = self.transform(image)
+
+        return image, label
 
 # Load and preprocess data
 def load_data(data_path):
@@ -34,24 +55,26 @@ def load_data(data_path):
 
     data = np.array(data).astype(np.float32)
     labels = np.array(labels).astype(np.int64)
-
     return train_test_split(data, labels, test_size=0.2, random_state=42)
 
+# Get data
 X_train, X_test, y_train, y_test = load_data("brain_tumor_dataset")
 
-# Convert to PyTorch tensors
-X_train_tensor = torch.tensor(X_train).permute(0, 3, 1, 2)
-y_train_tensor = torch.tensor(y_train).long()
-X_test_tensor = torch.tensor(X_test).permute(0, 3, 1, 2)
-y_test_tensor = torch.tensor(y_test).long()
+# Transforms
+train_transform = transforms.Compose([
+    transforms.RandomHorizontalFlip(),
+    transforms.RandomRotation(20),
+    transforms.RandomResizedCrop(IMG_SIZE, scale=(0.8, 1.0)),
+])
+test_transform = None  # No transform for test data
 
-# Create DataLoaders
-train_dataset = TensorDataset(X_train_tensor, y_train_tensor)
-test_dataset = TensorDataset(X_test_tensor, y_test_tensor)
+# Datasets and Loaders
+train_dataset = BrainTumorDataset(X_train, y_train, transform=train_transform)
+test_dataset = BrainTumorDataset(X_test, y_test, transform=test_transform)
 train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
 test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE)
 
-# Enhanced CNN model
+# CNN Model
 class BrainTumorCNN(nn.Module):
     def __init__(self):
         super(BrainTumorCNN, self).__init__()
@@ -89,12 +112,14 @@ class BrainTumorCNN(nn.Module):
         x = self.conv_block(x)
         return self.classifier(x)
 
+# Model, Loss, Optimizer
 model = BrainTumorCNN()
 criterion = nn.BCELoss()
 optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
 # Training loop
 train_losses, val_accuracies = [], []
+
 for epoch in range(EPOCHS):
     model.train()
     running_loss = 0.0
@@ -106,10 +131,11 @@ for epoch in range(EPOCHS):
         loss.backward()
         optimizer.step()
         running_loss += loss.item()
+
     avg_loss = running_loss / len(train_loader)
     train_losses.append(avg_loss)
 
-    # Validation accuracy
+    # Validation
     model.eval()
     correct = 0
     total = 0
@@ -124,16 +150,18 @@ for epoch in range(EPOCHS):
 
     print(f"Epoch {epoch+1}, Loss: {avg_loss:.4f}, Validation Accuracy: {acc:.2f}%")
 
-# Plot training loss and validation accuracy
-plt.figure(figsize=(12, 5))
-plt.subplot(1, 2, 1)
+# Plot Training Loss
+plt.figure(figsize=(6, 4))
 plt.plot(train_losses, label='Training Loss')
 plt.xlabel("Epoch")
 plt.ylabel("Loss")
 plt.title("Training Loss Over Epochs")
 plt.legend()
+plt.tight_layout()
+plt.show()
 
-plt.subplot(1, 2, 2)
+# Plot Validation Accuracy
+plt.figure(figsize=(6, 4))
 plt.plot(val_accuracies, label='Validation Accuracy', color='green')
 plt.xlabel("Epoch")
 plt.ylabel("Accuracy (%)")
@@ -142,5 +170,5 @@ plt.legend()
 plt.tight_layout()
 plt.show()
 
-# Save model
+# Save the model
 torch.save(model.state_dict(), "brain_tumor_model.pth")
