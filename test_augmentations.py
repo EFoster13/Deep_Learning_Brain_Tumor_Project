@@ -18,7 +18,8 @@ labels = []
 for category in categories:
     path = os.path.join(data_path, category)
     class_num = categories.index(category)
-    for img_name in os.listdir(path)[:10]:  # Load only 10 images to test
+    # 1. Loads 10 sample images (just for testing)
+    for img_name in os.listdir(path)[:10]: 
         img_path = os.path.join(path, img_name)
         img = cv2.imread(img_path)
         img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
@@ -33,9 +34,9 @@ X_tensor = torch.tensor(data, dtype=torch.float32).permute(0, 3, 1, 2)
 
 # ---- Define augmentation transforms ----
 augmentation = transforms.Compose([
-    transforms.RandomHorizontalFlip(),
-    transforms.RandomRotation(30),
-    transforms.RandomResizedCrop(IMG_SIZE, scale=(0.8, 1.0)),
+    transforms.RandomHorizontalFlip(),       # 50% chance flip left/right
+    transforms.RandomRotation(30),           # Rotate up to ±30 degrees
+    transforms.RandomResizedCrop(IMG_SIZE, scale=(0.8, 1.0)),       # Zoom in randomly
 ])
 
 # ---- Visualize original and augmented images ----
