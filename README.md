@@ -2,10 +2,9 @@
 
 A high-accuracy deep learning model for binary classification of brain MRI scans to detect the presence of tumors. This project uses transfer learning with ResNet18 and achieves **98.81% accuracy** on test data.
 
-
 ---
 
-## Project Overview
+## 🎯 Project Overview
 
 This project implements a Convolutional Neural Network (CNN) for automated brain tumor detection from MRI scans. The model can classify brain scans into two categories:
 - **Tumor Present** (yes)
@@ -15,34 +14,50 @@ The system leverages transfer learning with a pre-trained ResNet18 model, fine-t
 
 ---
 
-## Performance Metrics
+## Performance Metrics & Critical Findings
 
-### Model Comparison
+### ⚠️ IMPORTANT DISCOVERY: Dataset Bias
 
-| Model | Accuracy | Tumor Detection | No Tumor Detection | Correct Predictions |
-|-------|----------|-----------------|-------------------|---------------------|
-| **Original Model** | 89.72% | 97% recall | 79% recall | 227/253 |
-| **Improved Model** | **98.81%** | **98.71%** | **98.98%** | **250/253** |
-| **Improvement** | **+9.09%** | **+1.71%** | **+19.98%** | **+23 images** |
+Through Grad-CAM analysis and iterative validation, this project revealed **significant dataset bias** that inflated accuracy metrics. This section documents both the initial results and the bias discovery process.
 
-### Detailed Classification Report (Improved Model)
+### Initial Model Performance (Biased)
+
+| Model | Accuracy | What It Actually Learned |
+|-------|----------|--------------------------|
+| **Initial Model** | 98.81% | Image size shortcuts (630×630 vs 225×225 pixels) ❌ |
+| **After Center Crop** | 92.16% | Border artifacts (partial fix) ⚠️ |
+| **After Circular Mask** | **96.08%** | Edge contrast patterns (bias persists) ⚠️ |
+
+### Detailed Classification Report (Final Masked Model)
 
 ```
                precision    recall  f1-score   support
-  Tumor (yes)       0.99      0.99      0.99       155
-No Tumor (no)       0.98      0.99      0.98        98
+  Tumor (yes)       0.95      0.97      0.96       155
+No Tumor (no)       0.96      0.93      0.95        98
 
-     accuracy                           0.99       253
-    macro avg       0.99      0.99      0.99       253
- weighted avg       0.99      0.99      0.99       253
+     accuracy                           0.96       253
+    macro avg       0.96      0.95      0.95       253
+ weighted avg       0.96      0.96      0.96       253
 ```
 
-**Key Achievements:**
-- ✅ **98.81% overall accuracy** on 253 test images
-- ✅ Only **3 misclassifications** out of 253 images
-- ✅ **99% precision** - When predicting tumor, correct 99% of the time
-- ✅ **99% recall** - Detects 99% of actual tumors
-- ✅ **Balanced performance** across both classes
+**Key Findings:**
+- ⚠️ **Initial 98.81% accuracy was misleading** - model exploited dataset artifacts
+- ✅ **Grad-CAM revealed bias** - model focused on image size, borders, and edges instead of brain tissue
+- ✅ **Iterative preprocessing reduced bias** - from 98.81% → 92.16% → 96.08%
+- ⚠️ **Bias persisted despite aggressive preprocessing** - demonstrates dataset quality issues
+- ✅ **Final model more trustworthy** despite lower accuracy - focuses more on brain features
+
+### Dataset Bias Analysis
+
+**Discovered Biases:**
+1. **Size Bias:** Tumor images averaged 630×630px, non-tumor 225×225px
+2. **Border Bias:** Different edge brightness (14.3 intensity units difference on right border)
+3. **Edge Contrast Bias:** Circular boundary characteristics differ between classes
+
+**Preprocessing Attempts:**
+1. Standard resizing → 98.81% (size bias remained)
+2. Center cropping + standardization → 92.16% (border bias reduced)
+3. Circular masking → 96.08% (edge bias persists)
 
 ---
 
@@ -85,22 +100,35 @@ nn.Sequential(
 
 ```
 AI_Brain_Tumor_Project/
-├── brain_tumor_dataset/
-│   ├── yes/              # MRI scans with tumors
-│   └── no/               # MRI scans without tumors
-├── brain_tumor_model2.py           # Original training script
-├── brain_tumor_model_improved.py   # Improved training script (98.81%)
-├── test_model.py                   # Test original model
-├── test_improved_model.py          # Test improved model
-├── load_data.py                    # Data exploration script
-├── test_augmentations.py           # Visualize data augmentation
-├── .gitignore                      # Git ignore file
-└── README.md                       # This file
+├── brain_tumor_dataset/              # Original dataset (biased)
+│   ├── yes/                          # MRI scans with tumors
+│   └── no/                           # MRI scans without tumors
+├── brain_tumor_dataset_fixed/        # Center-cropped dataset
+│   ├── yes/                          
+│   └── no/                           
+├── brain_tumor_dataset_masked/       # Circular masked dataset (final)
+│   ├── yes/                          
+│   └── no/                           
+├── brain_tumor_model2.py             # Original training script
+├── brain_tumor_model_improved.py     # Enhanced training script (final)
+├── test_model.py                     # Test original model
+├── test_improved_model.py            # Test improved model
+├── predict_single_image.py           # Simple prediction tool
+├── predict_with_gradcam.py           # Grad-CAM visualization tool
+├── dataset_diagnostic.py             # Bias analysis tool
+├── fix_dataset_preprocessing.py      # Center crop preprocessing
+├── apply_circular_mask.py            # Circular mask preprocessing
+├── load_data.py                      # Data exploration script
+├── test_augmentations.py             # Visualize data augmentation
+├── .gitignore                        # Git ignore file
+└── README.md                         # This file
 ```
+
+**Note:** Model weight files (`.pth`) are not included in git due to size and the discovered bias issues.
 
 ---
 
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
@@ -207,7 +235,61 @@ Testing will provide:
 
 ---
 
-## Technical Details
+## Explainable AI & Bias Discovery
+
+### Grad-CAM Implementation
+
+This project implements **Gradient-weighted Class Activation Mapping (Grad-CAM)** for model interpretability, which proved critical in discovering dataset bias.
+
+**What Grad-CAM Revealed:**
+- Initial model focused on **image corners and borders** rather than brain tissue
+- Model exploited **size differences** (630×630 vs 225×225 pixels) as primary feature
+- Even after preprocessing, model found **edge contrast patterns** to exploit
+
+### Bias Discovery Process
+
+#### 1. Initial Observation (Grad-CAM Analysis)
+```
+Tumor images: Model focused on corners ❌
+No-tumor images: Model focused on brain tissue ✅
+Conclusion: Model using shortcuts, not learning anatomy
+```
+
+#### 2. Dataset Diagnostic Analysis
+Created diagnostic tools to quantify bias:
+- **Corner brightness analysis:** Minimal difference (4.19 units)
+- **Border analysis:** Significant difference (14.3 units on right border)
+- **Dimension analysis:** Major size discrepancy (630×630 vs 225×225)
+- **Average image comparison:** Clear structural differences
+
+#### 3. Iterative Preprocessing Attempts
+
+**Attempt 1: Center Cropping**
+- Cropped to 85% of image
+- Standardized to 400×400 pixels
+- Result: 92.16% accuracy (bias reduced but present)
+
+**Attempt 2: Circular Masking**
+- Applied circular mask (90% diameter)
+- Removed all corners completely
+- Result: 96.08% accuracy (edge bias persists)
+
+**Conclusion:** Dataset has inherent quality issues that preprocessing cannot fully resolve
+
+### Visualization Examples
+
+See `predict_with_gradcam.py` for interactive Grad-CAM visualization showing:
+- Original MRI scan
+- Grad-CAM heatmap (model attention)
+- Overlay showing focus areas
+- Prediction with confidence score
+
+**Example Usage:**
+```bash
+python predict_with_gradcam.py
+# Enter image path when prompted
+# Observe where model focuses attention
+```
 
 ### Data Preprocessing
 - **Image Size**: 224x224 pixels (ResNet18 input size)
@@ -257,30 +339,46 @@ The testing scripts generate several visualizations:
 
 ---
 
-## Key Learnings
+## Key Learnings & Implications
 
-### Why Transfer Learning Works
-- ResNet18 pre-trained on ImageNet already understands:
-  - Edges and textures (early layers)
-  - Shapes and patterns (middle layers)
-  - Complex features (deep layers)
-- We only need to teach it brain tumor-specific features
+### Critical Insights
 
-### Why Fine-Tuning Helps
-- Freezing all layers: Model can't adapt features
-- Training from scratch: Needs massive dataset
-- **Fine-tuning last block**: Best of both worlds! ✅
+1. **High Accuracy ≠ Good Model**
+   - Achieved 98.81% by exploiting dataset artifacts
+   - Lower accuracy (96.08%) with proper validation is more trustworthy
+   - Metrics alone don't validate model quality
 
-### Why BatchNorm Matters
-- Normalizes layer inputs during training
-- Allows higher learning rates
-- Acts as regularization
-- Makes training more stable
+2. **Explainability is Essential**
+   - Grad-CAM revealed hidden biases that accuracy metrics missed
+   - Visual inspection of model attention is critical for medical AI
+   - Black-box models are dangerous in high-stakes applications
+
+3. **Dataset Quality > Model Complexity**
+   - Sophisticated preprocessing couldn't fix fundamental data collection issues
+   - Bias can persist through multiple remediation attempts
+   - Data collection protocols matter more than model architecture
+
+4. **Iterative Validation is Necessary**
+   - Initial results looked great but were misleading
+   - Multiple rounds of testing revealed progressive issues
+   - Professional ML requires skepticism and validation
 
 ### Medical AI Considerations
-- **High recall is critical**: Missing a tumor (false negative) is worse than a false alarm
-- **Balanced performance**: Both classes need high accuracy
-- **Interpretability**: Important for medical applications (future work: attention maps)
+
+**Why This Matters for Healthcare:**
+- Deploying the 98.81% model would be dangerous despite high accuracy
+- Medical AI must be interpretable and trustworthy
+- Dataset bias can lead to systematic errors in clinical settings
+- This project demonstrates proper ML validation methodology
+
+### Lessons for Future Projects
+
+✅ **Always implement explainability** (Grad-CAM, SHAP, etc.)
+✅ **Visualize model attention** before deployment
+✅ **Question high accuracy** on small datasets
+✅ **Validate across multiple metrics** beyond accuracy
+✅ **Document limitations** honestly
+✅ **Prioritize dataset quality** in data collection phase
 
 ---
 
@@ -304,7 +402,7 @@ The testing scripts generate several visualizations:
 
 ---
 
-##  Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
@@ -314,11 +412,11 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 Your Name
 - GitHub: [@EFoster13](https://github.com/EFoster13)
-- LinkedIn: [Ethan Foster](https://linkedin.com/in/ethan-foster-3916b7329)
+- LinkedIn: [Your LinkedIn](https://linkedin.com/in/ethan-foster-3916b7329)
 
 ---
 
-## Acknowledgments
+## 🙏 Acknowledgments
 
 - This project uses a publicly available Brain Tumor MRI dataset from Kaggle, consisting of labeled MRI images categorized by tumor presence. The dataset is used to train and evaluate deep learning models for automated brain tumor detection.
 - PyTorch and torchvision teams
@@ -327,8 +425,9 @@ Your Name
 
 ---
 
-## Contact
+## 📞 Contact
 
-For questions or collaboration opportunities, please reach out via [ewfoster337@gmail.com]
+For questions or collaboration opportunities, please reach out via [ewfoster337@gmail.com](mailto:ewfoster337@gmail.com)
 
 ---
+
