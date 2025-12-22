@@ -113,7 +113,7 @@ def display_comparison_results(labels, predictions, probabilities, images, filen
     # Show improvement comparison
     original_acc = 89.72  # From your previous test
     improvement = accuracy - original_acc
-    print(f"\n📊 PERFORMANCE COMPARISON:")
+    print(f"\nPERFORMANCE COMPARISON:")
     print(f"   Original Model:  {original_acc:.2f}%")
     print(f"   Improved Model:  {accuracy:.2f}%")
     print(f"   Improvement:     +{improvement:.2f}% 🚀")
@@ -206,7 +206,7 @@ def display_comparison_results(labels, predictions, probabilities, images, filen
                                probabilities, images, filenames, "INCORRECT")
     else:
         print("\n" + "="*70)
-        print("🎉 PERFECT SCORE! No incorrect predictions!")
+        print("PERFECT SCORE! No incorrect predictions!")
         print("="*70)
 
 def show_sample_predictions(indices, labels, predictions, probabilities, images, filenames, title):
@@ -267,5 +267,5 @@ if __name__ == "__main__":
     display_comparison_results(labels, predictions, probabilities, images, filenames)
     
     print("\n" + "="*70)
-    print("Testing complete! 🎉")
+    print("Testing complete!")
     print("="*70)
