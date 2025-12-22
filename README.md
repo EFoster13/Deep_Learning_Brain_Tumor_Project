@@ -4,7 +4,7 @@ A high-accuracy deep learning model for binary classification of brain MRI scans
 
 ---
 
-## 🎯 Project Overview
+## Project Overview
 
 This project implements a Convolutional Neural Network (CNN) for automated brain tumor detection from MRI scans. The model can classify brain scans into two categories:
 - **Tumor Present** (yes)
@@ -16,7 +16,7 @@ The system leverages transfer learning with a pre-trained ResNet18 model, fine-t
 
 ## Performance Metrics & Critical Findings
 
-### ⚠️ IMPORTANT DISCOVERY: Dataset Bias
+### IMPORTANT DISCOVERY: Dataset Bias
 
 Through Grad-CAM analysis and iterative validation, this project revealed **significant dataset bias** that inflated accuracy metrics. This section documents both the initial results and the bias discovery process.
 
@@ -41,11 +41,11 @@ No Tumor (no)       0.96      0.93      0.95        98
 ```
 
 **Key Findings:**
-- ⚠️ **Initial 98.81% accuracy was misleading** - model exploited dataset artifacts
-- ✅ **Grad-CAM revealed bias** - model focused on image size, borders, and edges instead of brain tissue
-- ✅ **Iterative preprocessing reduced bias** - from 98.81% → 92.16% → 96.08%
-- ⚠️ **Bias persisted despite aggressive preprocessing** - demonstrates dataset quality issues
-- ✅ **Final model more trustworthy** despite lower accuracy - focuses more on brain features
+-  **Initial 98.81% accuracy was misleading** - model exploited dataset artifacts
+-  **Grad-CAM revealed bias** - model focused on image size, borders, and edges instead of brain tissue
+-  **Iterative preprocessing reduced bias** - from 98.81% → 92.16% → 96.08%
+-  **Bias persisted despite aggressive preprocessing** - demonstrates dataset quality issues
+-  **Final model more trustworthy** despite lower accuracy - focuses more on brain features
 
 ### Dataset Bias Analysis
 
@@ -128,7 +128,7 @@ AI_Brain_Tumor_Project/
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -373,12 +373,12 @@ The testing scripts generate several visualizations:
 
 ### Lessons for Future Projects
 
-✅ **Always implement explainability** (Grad-CAM, SHAP, etc.)
-✅ **Visualize model attention** before deployment
-✅ **Question high accuracy** on small datasets
-✅ **Validate across multiple metrics** beyond accuracy
-✅ **Document limitations** honestly
-✅ **Prioritize dataset quality** in data collection phase
+**Always implement explainability** (Grad-CAM, SHAP, etc.)
+**Visualize model attention** before deployment
+**Question high accuracy** on small datasets
+**Validate across multiple metrics** beyond accuracy
+**Document limitations** honestly
+**Prioritize dataset quality** in data collection phase
 
 ---
 
@@ -412,11 +412,11 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 Your Name
 - GitHub: [@EFoster13](https://github.com/EFoster13)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/ethan-foster-3916b7329)
+- LinkedIn: [Ethan Foster](https://linkedin.com/in/ethan-foster-3916b7329)
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - This project uses a publicly available Brain Tumor MRI dataset from Kaggle, consisting of labeled MRI images categorized by tumor presence. The dataset is used to train and evaluate deep learning models for automated brain tumor detection.
 - PyTorch and torchvision teams
@@ -425,7 +425,7 @@ Your Name
 
 ---
 
-## 📞 Contact
+## Contact
 
 For questions or collaboration opportunities, please reach out via [ewfoster337@gmail.com](mailto:ewfoster337@gmail.com)
 
