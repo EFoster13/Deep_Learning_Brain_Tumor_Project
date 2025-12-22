@@ -217,13 +217,13 @@ def display_gradcam_prediction(image, heatmap, prediction, confidence, probabili
     
     # Confidence interpretation
     if confidence > 95:
-        interpretation = '🎯 Very High Confidence'
+        interpretation = 'Very High Confidence'
     elif confidence > 85:
-        interpretation = '✅ High Confidence'
+        interpretation = 'High Confidence'
     elif confidence > 70:
-        interpretation = '⚠️ Moderate Confidence'
+        interpretation = 'Moderate Confidence'
     else:
-        interpretation = '❓ Low Confidence'
+        interpretation = 'Low Confidence'
     
     plt.text(0.5, 0.15, interpretation,
              ha='center', va='center', fontsize=16)
@@ -249,21 +249,11 @@ def display_gradcam_prediction(image, heatmap, prediction, confidence, probabili
     explanation_text = """
     GRAD-CAM EXPLANATION:
     
-    🔴 RED/YELLOW: High importance
+    RED/YELLOW: High importance
        Model focuses here for decision
     
-    🔵 BLUE/PURPLE: Low importance
+    BLUE/PURPLE: Low importance
        Model ignores these regions
-    
-    📊 HOW IT WORKS:
-    Grad-CAM traces which pixels
-    influenced the model's decision
-    by analyzing gradients through
-    the neural network.
-    
-    This shows the model is looking
-    at meaningful brain structures,
-    not random artifacts!
     """
     plt.text(0.1, 0.5, explanation_text, 
              ha='left', va='center', fontsize=10, family='monospace')
@@ -287,7 +277,7 @@ def display_gradcam_prediction(image, heatmap, prediction, confidence, probabili
     print(f"Confidence: {confidence:.2f}%")
     print(f"Raw Probability: {probability:.4f}")
     print("="*70)
-    print("\n📍 GRAD-CAM ANALYSIS:")
+    print("\nGRAD-CAM ANALYSIS:")
     print("The heatmap shows which regions of the brain scan")
     print("the model focused on when making its prediction.")
     print("\nRed/Yellow areas = High attention (important for decision)")
@@ -321,10 +311,10 @@ def main():
     
     # Check if file exists
     if not os.path.exists(image_path):
-        print(f"\n❌ Error: File not found at {image_path}")
+        print(f"\nError: File not found at {image_path}")
         return
     
-    print(f"\n🔍 Analyzing image with Grad-CAM: {image_path}")
+    print(f"\nAnalyzing image with Grad-CAM: {image_path}")
     print("Generating heatmap visualization...")
     print("Please wait...\n")
     
