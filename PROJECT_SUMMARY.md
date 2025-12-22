@@ -1,6 +1,6 @@
 # Brain Tumor Detection Project - Executive Summary
 
-## 🎯 Project Overview
+## Project Overview
 
 This project demonstrates the complete lifecycle of a medical AI system, from initial development to critical validation and bias discovery. While initially achieving 98.81% accuracy, Grad-CAM analysis revealed the model was exploiting dataset artifacts rather than learning meaningful anatomical features.
 
@@ -12,9 +12,9 @@ This project demonstrates the complete lifecycle of a medical AI system, from in
 
 | Phase | Accuracy | Primary Learning Method | Validation Status |
 |-------|----------|------------------------|-------------------|
-| **Phase 1: Initial Model** | 98.81% | Image size (630×630 vs 225×225) | ❌ Biased |
-| **Phase 2: Center Cropped** | 92.16% | Border artifacts (reduced) | ⚠️ Partially Fixed |
-| **Phase 3: Circular Masked** | 96.08% | Edge contrast patterns | ⚠️ Bias Persists |
+| **Phase 1: Initial Model** | 98.81% | Image size (630×630 vs 225×225) | Biased |
+| **Phase 2: Center Cropped** | 92.16% | Border artifacts (reduced) | Partially Fixed |
+| **Phase 3: Circular Masked** | 96.08% | Edge contrast patterns | Bias Persists |
 
 ---
 
@@ -122,22 +122,20 @@ Created diagnostic tools revealing:
 ## Skills Demonstrated
 
 ### Technical Skills
-✅ Deep Learning (PyTorch, CNNs, Transfer Learning)
-✅ Computer Vision (Image preprocessing, augmentation)
-✅ Explainable AI (Grad-CAM implementation)
-✅ Data Analysis (Statistical bias detection)
-✅ Model Optimization (Fine-tuning, regularization)
+Deep Learning (PyTorch, CNNs, Transfer Learning)
+Computer Vision (Image preprocessing, augmentation)
+Explainable AI (Grad-CAM implementation)
+Data Analysis (Statistical bias detection)
+Model Optimization (Fine-tuning, regularization)
 
 ### Professional Skills
-✅ Critical Thinking (Questioned high accuracy)
-✅ Problem Solving (Iterative debugging approach)
-✅ Scientific Method (Hypothesis → Test → Validate)
-✅ Communication (Clear documentation of findings)
-✅ Ethics (Honest reporting of limitations)
+Critical Thinking (Questioned high accuracy)
+Problem Solving (Iterative debugging approach)
+Scientific Method (Hypothesis → Test → Validate)
+Communication (Clear documentation of findings)
+Ethics (Honest reporting of limitations)
 
 ---
-
-## Why This Project Stands Out
 
 ### Most Projects Show:
 - High accuracy numbers
@@ -154,21 +152,21 @@ Created diagnostic tools revealing:
 
 ---
 
-## 🎯 Project Outcomes
+## Project Outcomes
 
 ### Technical Deliverables
-✅ Working brain tumor classifier (96.08% validation accuracy)
-✅ Grad-CAM visualization tool for model interpretability
-✅ Dataset diagnostic suite for bias detection
-✅ Three preprocessed dataset versions
-✅ Comprehensive documentation and analysis
+Working brain tumor classifier (96.08% validation accuracy)
+Grad-CAM visualization tool for model interpretability
+Dataset diagnostic suite for bias detection
+Three preprocessed dataset versions
+Comprehensive documentation and analysis
 
 ### Learning Outcomes
-✅ Practical experience with bias detection and remediation
-✅ Understanding of explainable AI importance
-✅ Real-world ML validation practices
-✅ Dataset quality awareness
-✅ Professional scientific approach to ML
+Practical experience with bias detection and remediation
+Understanding of explainable AI importance
+Real-world ML validation practices
+Dataset quality awareness
+Professional scientific approach to ML
 
 ---
 
