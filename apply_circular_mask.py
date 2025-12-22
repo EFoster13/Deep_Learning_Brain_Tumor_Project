@@ -342,7 +342,7 @@ def main():
     
     # Check source
     if not os.path.exists(SOURCE_DIR):
-        print(f"\n❌ Error: Source directory '{SOURCE_DIR}' not found!")
+        print(f"\nError: Source directory '{SOURCE_DIR}' not found!")
         return
     
     # Show demonstration
@@ -365,7 +365,7 @@ def main():
         if show_comp.lower() in ['yes', 'y']:
             show_before_after_comparison(SOURCE_DIR, OUTPUT_DIR, num_samples=4)
     
-    print("\n✓ Done! Ready to retrain with bias-free dataset.")
+    print("\n✓ Done! Ready to retrain.")
 
 if __name__ == "__main__":
     main()
