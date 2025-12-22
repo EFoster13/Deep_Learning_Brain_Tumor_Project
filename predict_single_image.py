@@ -152,13 +152,13 @@ def display_prediction(image, prediction, confidence, probability, image_path):
     
     # Interpretation
     if confidence > 95:
-        print("🎯 Very High Confidence - Model is very certain")
+        print("Very High Confidence - Model is very certain")
     elif confidence > 85:
-        print("✅ High Confidence - Model is confident")
+        print("High Confidence - Model is confident")
     elif confidence > 70:
-        print("⚠️  Moderate Confidence - Consider additional review")
+        print("Moderate Confidence - Consider additional review")
     else:
-        print("❓ Low Confidence - Uncertain prediction")
+        print("Low Confidence - Uncertain prediction")
     print("="*60 + "\n")
 
 # -----------------------------
@@ -192,11 +192,11 @@ def main():
     
     # Check if file exists
     if not os.path.exists(image_path):
-        print(f"\n❌ Error: File not found at {image_path}")
+        print(f"\nError: File not found at {image_path}")
         print("Please check the path and try again.")
         return
     
-    print(f"\n🔍 Analyzing image: {image_path}")
+    print(f"\nAnalyzing image: {image_path}")
     print("Please wait...\n")
     
     try:
@@ -218,7 +218,7 @@ def main():
             print("="*60)
     
     except Exception as e:
-        print(f"\n❌ Error during prediction: {str(e)}")
+        print(f"\nError during prediction: {str(e)}")
         print("Please make sure the image is a valid MRI scan.")
 
 # -----------------------------
