@@ -132,14 +132,14 @@ def preprocess_image(image, target_size=400):
     # Convert to RGB
     image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     
-    # Step 1: Center crop to focus on brain region (removes corners/borders)
+    # Center crop to focus on brain region (removes corners/borders)
     cropped = center_crop_brain_region(image_rgb, crop_percentage=0.85)
     
-    # Step 2: Resize to standard size (removes size-based bias)
+    # Resize to standard size (removes size-based bias)
     resized = cv2.resize(cropped, (target_size, target_size), 
                         interpolation=cv2.INTER_AREA)
     
-    # Step 3: Add consistent border (normalizes edge appearance)
+    # Add consistent border (normalizes edge appearance)
     bordered = add_consistent_border(resized, border_size=5, border_color=0)
     
     return bordered
@@ -213,7 +213,7 @@ def process_dataset(source_dir, output_dir, target_size=400):
                 stats['processed'] += 1
             else:
                 stats['skipped'] += 1
-                print(f"    ⚠️  Skipped (invalid): {img_name}")
+                print(f"     Skipped (invalid): {img_name}")
     
     # Print summary
     print("\n" + "="*70)
@@ -302,7 +302,7 @@ def main():
     
     # Check if source directory exists
     if not os.path.exists(SOURCE_DIR):
-        print(f"\n❌ Error: Source directory '{SOURCE_DIR}' not found!")
+        print(f"\nError: Source directory '{SOURCE_DIR}' not found!")
         return
     
     # Confirm with user
