@@ -24,9 +24,9 @@ Through Grad-CAM analysis and iterative validation, this project revealed **sign
 
 | Model | Accuracy | What It Actually Learned |
 |-------|----------|--------------------------|
-| **Initial Model** | 98.81% | Image size shortcuts (630×630 vs 225×225 pixels) ❌ |
-| **After Center Crop** | 92.16% | Border artifacts (partial fix) ⚠️ |
-| **After Circular Mask** | **96.08%** | Edge contrast patterns (bias persists) ⚠️ |
+| **Initial Model** | 98.81% | Image size shortcuts (630×630 vs 225×225 pixels) |
+| **After Center Crop** | 92.16% | Border artifacts (partial fix) |
+| **After Circular Mask** | **96.08%** | Edge contrast patterns (bias persists) |
 
 ### Detailed Classification Report (Final Masked Model)
 
@@ -250,8 +250,8 @@ This project implements **Gradient-weighted Class Activation Mapping (Grad-CAM)*
 
 #### 1. Initial Observation (Grad-CAM Analysis)
 ```
-Tumor images: Model focused on corners ❌
-No-tumor images: Model focused on brain tissue ✅
+Tumor images: Model focused on corners 
+No-tumor images: Model focused on brain tissue 
 Conclusion: Model using shortcuts, not learning anatomy
 ```
 
@@ -399,12 +399,6 @@ The testing scripts generate several visualizations:
 - **ResNet Paper**: [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385)
 - **Transfer Learning**: [A Survey on Transfer Learning](https://ieeexplore.ieee.org/document/5288526)
 - **Medical Image Analysis**: [Deep Learning in Medical Image Analysis](https://www.sciencedirect.com/science/article/pii/S1361841517301135)
-
----
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
