@@ -205,10 +205,10 @@ Training will:
 
 **Training Output:**
 ```
-Epoch 1/20 | Train Loss: 0.5980 | Val Loss: 0.6030 | Val Acc: 86.27% ⭐ NEW BEST!
-Epoch 2/20 | Train Loss: 0.4523 | Val Loss: 0.3756 | Val Acc: 92.16% ⭐ NEW BEST!
-Epoch 3/20 | Train Loss: 0.3514 | Val Loss: 0.2587 | Val Acc: 94.12% ⭐ NEW BEST!
-Epoch 4/20 | Train Loss: 0.2455 | Val Loss: 0.1964 | Val Acc: 98.04% ⭐ NEW BEST!
+Epoch 1/20 | Train Loss: 0.5980 | Val Loss: 0.6030 | Val Acc: 86.27%  NEW BEST!
+Epoch 2/20 | Train Loss: 0.4523 | Val Loss: 0.3756 | Val Acc: 92.16%  NEW BEST!
+Epoch 3/20 | Train Loss: 0.3514 | Val Loss: 0.2587 | Val Acc: 94.12%  NEW BEST!
+Epoch 4/20 | Train Loss: 0.2455 | Val Loss: 0.1964 | Val Acc: 98.04%  NEW BEST!
 ...
 Best validation accuracy: 98.04%
 ```
