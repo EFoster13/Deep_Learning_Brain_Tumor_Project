@@ -385,8 +385,6 @@ The testing scripts generate several visualizations:
 ## Future Improvements
 
 - [ ] Multi-class classification (tumor types: glioma, meningioma, pituitary)
-- [ ] Grad-CAM visualization to show which regions influence predictions
-- [ ] Ensemble models (combine multiple architectures)
 - [ ] Test on external datasets for generalization
 - [ ] Web application for easy deployment
 - [ ] Integration with DICOM medical imaging standards
