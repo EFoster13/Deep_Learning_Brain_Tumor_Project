@@ -153,17 +153,16 @@ model.fc = nn.Sequential(
     nn.Sigmoid()
 )
 
-print("✓ Model architecture created")
-print(f"✓ Unfroze layer4 for fine-tuning")
-print(f"✓ Enhanced classifier with BatchNorm\n")
+print("Model architecture created")
+print(f"Unfroze layer4 for fine-tuning")
+print(f"Enhanced classifier with BatchNorm\n")
 
 # -----------------------------
 # IMPROVEMENT 3: Loss and Optimizer with Weight Decay
 # -----------------------------
-# This helps prevent overfitting
 criterion = nn.BCELoss()
 
-# We optimize BOTH the unfrozen layer4 AND the classifier
+# Optimize BOTH the unfrozen layer4 AND the classifier
 # Using different learning rates 
 optimizer = optim.Adam([
     {'params': model.layer4.parameters(), 'lr': LEARNING_RATE * 0.1},  # Lower LR for pretrained layers
@@ -172,16 +171,15 @@ optimizer = optim.Adam([
 
 # IMPROVEMENT 4: Learning Rate Scheduler
 # Reduces learning rate when validation accuracy plateaus
-# This helps the model fine-tune and reach better performance
 scheduler = optim.lr_scheduler.ReduceLROnPlateau(
     optimizer, 
-    mode='max',           # We want to maximize accuracy
+    mode='max',           # Want to maximize accuracy
     factor=0.5,           # Reduce LR by half
     patience=3,           # Wait 3 epochs before reducing
 )
 
-print("✓ Optimizer configured with different learning rates")
-print("✓ Learning rate scheduler enabled\n")
+print("Optimizer configured with different learning rates")
+print("Learning rate scheduler enabled\n")
 
 # -----------------------------
 # IMPROVEMENT 5: Training with Early Stopping
@@ -242,14 +240,14 @@ for epoch in range(EPOCHS):
         best_val_acc = val_acc
         best_model_state = model.state_dict().copy()
         patience_counter = 0
-        print(f"Epoch {epoch+1}/{EPOCHS} | Train Loss: {avg_train_loss:.4f} | Val Loss: {avg_val_loss:.4f} | Val Acc: {val_acc:.2f}% ⭐ NEW BEST!")
+        print(f"Epoch {epoch+1}/{EPOCHS} | Train Loss: {avg_train_loss:.4f} | Val Loss: {avg_val_loss:.4f} | Val Acc: {val_acc:.2f}% NEW BEST!")
     else:
         patience_counter += 1
         print(f"Epoch {epoch+1}/{EPOCHS} | Train Loss: {avg_train_loss:.4f} | Val Loss: {avg_val_loss:.4f} | Val Acc: {val_acc:.2f}%")
     
     # IMPROVEMENT 7: Early stopping
     # If validation accuracy doesn't improve for 7 epochs, stop training
-    # This prevents wasting time and potential overfitting
+    # Prevents wasting time and potential overfitting
     if patience_counter >= early_stop_patience:
         print(f"\n⚠ Early stopping triggered! No improvement for {early_stop_patience} epochs.")
         print(f"Best validation accuracy: {best_val_acc:.2f}%")
